@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Untitled Document</title>
+    <style type="text/css"><!--
+      #updateCols {
+        visibility: collapse;
+      }
+      .updateCols {
+        visibility: collapse;
+      }
+    //--></style>
+	</head>
+	<body>
+<script type="text/javascript" language="javascript"><!--
+  function addItem()
+  {
+    var allCols = document.csv_import.allCols;
+    //if (document.all)
+      //allCols = document.all.csv_import.allCols;
+    if(allCols.selectedIndex != -1)
+    {
+      var el = document.getElementsByName("sCols[]")[0];
+      var entry = document.createElement("option");
+      var item = allCols.options[allCols.selectedIndex];
+      entry.text = "col " + (el.length+1) + ": " + item.text;
+      entry.value = item.value;
+      if(item.value!="SPACER"){
+        allCols.remove(allCols.selectedIndex);
+      }
+      var option = null;
+      if (document.all)
+        option = entry.length;
+      el.add(entry, option);
+    }
+  }
+  function removeItem()
+  {
+    var allCols = document.getElementsByName("sCols[]")[0];
+    if(allCols.selectedIndex != -1)
+    {
+      var el = document.csv_import.allCols;
+      var entry = document.createElement("option");
+      var item = allCols.options[allCols.selectedIndex];
+      entry.text = item.value;
+      entry.value = item.value;
+      allCols.remove(allCols.selectedIndex);
+      
+      var allOptions = allCols.getElementsByTagName("option");
+      for (var i = 0; i < allOptions.length; i++) {
+        allOptions[i].innerHTML = "col " + (i+1) + ": " + allOptions[i].value;
+      }
+      var option = null;
+      if (document.all)
+        option = entry.length;
+      if(item.value!="SPACER"){
+      el.add(entry, option);
+      }
+    }
+  }
+  function selectAll()
+  {
+    var allCols = document.getElementsByName("sCols[]")[0];
+    for(var i = 0; i < allCols.length; i++)
+    {
+      allCols.options[i].selected = true;
+    }
+  }
+
+  /**
+   * Select elements by their class name
+   *
+   * @author Dustin Diaz <dustin [at] dustindiaz [dot] com>
+   * @link   http://www.dustindiaz.com/getelementsbyclass/
+   */
+  function getElementsByClass(searchClass,node,tag) {
+    var classElements = new Array();
+    if ( node == null )
+      node = document;
+    if ( tag == null )
+      tag = '*';
+    var els = node.getElementsByTagName(tag);
+    var elsLen = els.length;
+    //var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+    var pattern = new RegExp(""+searchClass+"");
+    for (i = 0, j = 0; i < elsLen; i++) {
+      if ( pattern.test(els[i].className) ) {
+        classElements[j] = els[i];
+        j++;
+      }
+    }
+    return classElements;
+  }
+  
+  function toggleVisible(element, initial) {
+  var state = element.style.visibility;
+  if (state == "") {
+      state = initial;
+    }
+  if (state == "collapse") {
+    element.style.visibility = "visible";
+  } else {
+    element.style.visibility = "collapse";
+  }
+  }
+  
+  function toggleVisibleElements(elements, initial) {
+    for (var i=0; i< elements.length; i++) {
+      //window.alert('in toggleVisibleElements element class = ' + element.className);
+      toggleVisible(elements[i], initial);
+    }
+  }
+  
+  function toggleVisibleClass(tag, className, initial) {
+    classElements = getElementsByClass(className, null, tag);
+    toggleVisibleElements(classElements, 'collapse');
+  } 
+  
+  function toggleVisibleName(name, initial) {
+    nameElements = document.getElementsByName(name);
+    toggleVisibleElements(nameElements, 'collapse');
+  } 
+//--></script>  
+<form name="csv_import" enctype="multipart/form-data" action="/tim/csvtosql/ui_csvhandle.php" method="post" onsubmit="selectAll();">
+  <select size="20" name="sCols[]" style="width:300px;" onclick="removeItem();" multiple="multiple">
+    <option id='f' value='f'>col 1: f</option>
+  </select>
+  <select size="20" name="allCols" style="width:300px;" onclick="addItem();">
+  <option value="SPACER">[skip col]</option>
+<option id='a' value='a'>a</option>
+<option id='b' value='b'>b</option>
+<option id='c' value='c'>c</option>
+<option id='d' value='d'>d</option>
+<option id='e' value='e'>e</option>
+  </select>
+</form>
+	</body>
+</html>

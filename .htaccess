@@ -1,0 +1,5 @@
+php_flag auto_detect_line_endings 1
+php_value post_max_size 30M
+php_value memory_limit 256M
+php_value post_max_size 30M
+php_value upload_max_filesize 30M
