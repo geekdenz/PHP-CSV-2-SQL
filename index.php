@@ -119,6 +119,7 @@ else {
 		    $db->query($q);
 		    echo $q."\n\n";
 	    }
+	    die("<pre>". print_r($post_queries,true) ." executed");
 	  }
 	  if ($debug) {
 	    echo "</pre>";

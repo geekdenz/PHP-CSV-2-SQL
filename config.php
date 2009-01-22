@@ -65,16 +65,17 @@ $number_of_lines_to_display = 10;
 
 // post queries for VirtueMart:
 $post_queries = array(
-	"UPDATE jos_vm_category SET category_published='Y'", # need products online
+	"UPDATE jos_vm_category SET category_publish='Y'", # need products online
 	"INSERT INTO jos_vm_category_xref (category_parent_id, category_child_id)
-  	 SELECT 0, category_id
-  	 FROM jos_vm_category",
+     SELECT 0, category_id
+     FROM jos_vm_category
+     WHERE category_id NOT IN (SELECT category_child_id FROM jos_vm_category_xref)",
 	"UPDATE jos_vm_category SET vendor_id=1",
 	"INSERT INTO `jos_vm_shopper_group` " .
 	"VALUES (5,1,'-default-','This is the default shopper group.','0.00',1,1)",
 	"UPDATE jos_vm_product_price SET shopper_group_id = 5",
 	"UPDATE jos_vm_product SET vendor_id=1",
-	//"UPDATE jos_vm_product set product_publish='Y'", # need only products online
+	"UPDATE jos_vm_product set product_publish='Y'", # need only products online
 );
 
 define('_VALID_MOS', true);
