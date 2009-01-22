@@ -1,13 +1,13 @@
 <?php
 /*
- * file: ui_csvhandle.php 
+ * file: ui_csvhandle.php
  * project: csvtosql
  * Created on 14/07/2007 at 4:12:00 PM
  *
  * @author Tim-Hinnerk Heuer (tim@ihostnz.com)
  * Copyright 2007 iHostNZ - Tim-Hinnerk Heuer
  *
- * This file only makes sense when it is included in index.php 
+ * This file only makes sense when it is included in index.php
  */
 require_once('includes.php');
 
@@ -89,7 +89,7 @@ require_once('includes.php');
     }
     return classElements;
   }
-  
+
   function toggleVisible(element, initial) {
 	var state = element.style.visibility;
 	if (state == "") {
@@ -101,23 +101,23 @@ require_once('includes.php');
 	  element.style.visibility = "collapse";
 	}
   }
-  
+
   function toggleVisibleElements(elements, initial) {
     for (var i=0; i< elements.length; i++) {
       //window.alert('in toggleVisibleElements element class = ' + element.className);
   	  toggleVisible(elements[i], initial);
   	}
   }
-  
+
   function toggleVisibleClass(tag, className, initial) {
   	classElements = getElementsByClass(className, null, tag);
   	toggleVisibleElements(classElements, 'collapse');
-  } 
-  
+  }
+
   function toggleVisibleName(name, initial) {
   	nameElements = document.getElementsByName(name);
   	toggleVisibleElements(nameElements, 'collapse');
-  } 
+  }
 //--></script>
 <?php
 
@@ -138,12 +138,12 @@ foreach ($mysql_tables as $table) {
         "<th>DEFAULT</th>" .
         "<th>EXTRA</th>" .
         "</tr>";
-    while ($row = $sess['db']->fetch_assoc()) {  	
+    while ($row = $sess['db']->fetch_assoc()) {
     	echo "<tr>\n";
       foreach ($row as $col) {
         echo "  <td>$col</td>\n";
       }
-      echo "</tr>\n";  	
+      echo "</tr>\n";
     }
     echo "</table><br />";
   endif;
@@ -153,11 +153,11 @@ if ($debug) echo "<br />\n" . $i;
 //    sql table.
 // display it with form fields behind every column.
 // show how many columns have values in CSV file.
-// show numbers 1, 2, 3, ..., $number_of_columns in table row. 
+// show numbers 1, 2, 3, ..., $number_of_columns in table row.
 // display CSV content (first $number_of_lines_to_display lines).
 
 ?>
-<form name="csv_import" enctype="multipart/form-data" action="<?php 
+<form name="csv_import" enctype="multipart/form-data" action="<?php
   echo $_SERVER['PHP_SELF']; ?>" method="post" onsubmit="selectAll();">
 
 <!-- <form name="csv_import" action="import-csv.php?ID=<?php print $_GET['ID'];?>&Table=<?php print $table;?>" method="post" enctype="multipart/form-data" onSubmit="selectAll();"> -->
@@ -171,7 +171,7 @@ if ($debug) echo "<br />\n" . $i;
 <tr align="center">
   <td>
     <p align="left">
-    <!-- 
+    <!--
     <span style="font-size: 0.8em">&nbsp;
       <input type="radio" value="ColIsHead" name="Cols" />
       Column name in first line
@@ -180,7 +180,7 @@ if ($debug) echo "<br />\n" . $i;
     <span style="font-size: 0.8em">&nbsp;
       <input type="radio" name="Cols" checked="checked" value="Select" />
         Select columns
-    </span>    
+    </span>
     </p>
   </td>
 </tr>
@@ -203,18 +203,18 @@ if ($debug) echo "<br />\n" . $i;
       while($result = $sess['db']->fetch_array($query)) {
       	$keyCols = explode(".", $mysql_key);
       	$keyCol = $keyCols[1];
-      	if (!in_array($table.".".$result[0], $csv_cols)) { 
+      	if (!in_array($table.".".$result[0], $csv_cols)) {
 	        $options .= "<option id='"
 	                      . htmlspecialchars($table.".".$result[0])
 	                      ."' value='"
-	                      . htmlspecialchars($table.".".$result[0]) 
+	                      . htmlspecialchars($table.".".$result[0])
 	                      . "'>"
 	                      . htmlspecialchars($table.".".$result[0]) ."</option>\n";
-      	}                      
+      	}
         $options2 .= "<option id='"
                       . htmlspecialchars($table.".".$result[0])
                       ."' value='"
-                      . htmlspecialchars($table.".".$result[0]) 
+                      . htmlspecialchars($table.".".$result[0])
                       . "'". (($keyCol == $result[0]) ? "selected='selected'" : "") .">"
                       . htmlspecialchars($table.".".$result[0]) ."</option>\n";
         $equalto .= "<br>$mysql_key == ".$result[0];
@@ -226,10 +226,11 @@ if ($debug) echo "<br />\n" . $i;
 </tr>
 <tr align="center">
   <td>
-  
-  <input type="checkbox" name="update" value="ON" 
-  		onclick="toggleVisible(document.getElementById('updateCols'), 'collapse'); 
-  				 toggleVisibleName('updateCol[]', 'collapse'); " /> 
+
+  <input type="checkbox" name="update" value="ON"
+  		onclick="toggleVisible(document.getElementById('updateCols'), 'collapse');
+  				 toggleVisibleName('updateCol[]', 'collapse'); "
+  				 checked="checked" />
     <font size="2">Overwrite rows with the same contents in
   <select name="identifier"><?php print $options2; ?></select>
   </font></td>
@@ -262,7 +263,7 @@ Your CSV file contains:
 <?php
 // $upload->file, $csv_delimiter, $csv_encloser, $csv_escape, $csv_lineend
 
-$csv = new CSV($upload->file, $_POST['delimiter'], 
+$csv = new CSV($upload->file, $_POST['delimiter'],
                $_POST['encloser'], $_POST['escape'], $_POST['lineend']);
 
 $columns = array();
@@ -283,15 +284,15 @@ else {
 $num_records = $row['number'];
 if ($debug) {
   echo "num records = $num_records <br />";
-} 
+}
 if ($num_records > 0) {
   ?>
 <table border="1" cellspacing="5" cellpadding="5" class="csv">
   <?php
   $q = "SELECT * FROM $tmp_table;";
   $sess['db']->query($q);
-  
-  for ($i = 0; $i <  $number_of_lines_to_display; 
+
+  for ($i = 0; $i <  $number_of_lines_to_display;
        $i++ ) {
     $row = $sess['db']->fetch_assoc();
     if ($i == 0) {
@@ -303,13 +304,13 @@ if ($num_records > 0) {
         echo "<th>".
   			"<input class='updateCols' type='checkbox' checked='checked' name='updateCol[]' value='col ". ($j + 1) ."' />".
   			"col ". ($j + 1) .":</th>\n";
-      }  
+      }
       echo "</tr>";
     }
     echo "<tr>\n";
     foreach ($row as $col) {
     	echo "<td>$col</td>\n";
-    }  
+    }
     echo "</tr>\n";
   }
   echo "<tr><td colspan='". ($j + 1) ."' align='center'>...</td></tr>"
